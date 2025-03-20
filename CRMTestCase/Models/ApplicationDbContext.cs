@@ -23,7 +23,7 @@ namespace CRMTestCase.Models
                     LastName = "Doe",
                     Email = "john.doe@example.com",
                     Region = "North America",
-                    RegistrationDate = new DateTime(2023, 6, 15)
+                    RegistrationDate = new DateTime(2023, 6, 15, 0, 0, 0, DateTimeKind.Utc)
                 },
                 new Customer
                 {
@@ -32,7 +32,7 @@ namespace CRMTestCase.Models
                     LastName = "Smith",
                     Email = "jane.smith@example.com",
                     Region = "Europe",
-                    RegistrationDate = new DateTime(2023, 5, 10)
+                    RegistrationDate = new DateTime(2023, 6, 10, 0, 0, 0, DateTimeKind.Utc)
                 },
                 new Customer
                 {
@@ -41,7 +41,7 @@ namespace CRMTestCase.Models
                     LastName = "Gomez",
                     Email = "carlos.gomez@example.com",
                     Region = "South America",
-                    RegistrationDate = new DateTime(2023, 7, 22)
+                    RegistrationDate = new DateTime(2023, 7, 22, 0, 0, 0, DateTimeKind.Utc)
                 }
             );
         }
