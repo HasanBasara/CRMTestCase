@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using CRMTestCase.Models;
 using CRMTestCase.Repositories;
 using CRMTestCase.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
@@ -34,6 +35,9 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
+
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<JwtService>();
 
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();

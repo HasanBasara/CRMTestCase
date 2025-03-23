@@ -9,44 +9,41 @@ namespace CRMTestCase.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<User> UserManager;
-        private readonly SignInManager<User> SignInManager;
-        private readonly JwtService JwtService;
-        private readonly ILogger<AuthController> Logger;
+        private readonly IUserService _userService;
+        private readonly JwtService _jwtService;
+        private readonly ILogger<AuthController> _logger;
 
         public AuthController(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
+            IUserService userService,
             JwtService jwtService,
             ILogger<AuthController> logger)
         {
-            UserManager = userManager;
-            SignInManager = signInManager;
-            JwtService = jwtService;
-            Logger = logger;
+            _userService = userService;
+            _jwtService = jwtService;
+            _logger = logger;
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] User model)
+        public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            Logger.LogInformation($"Login attempt for user: {model.Username}");
+            _logger.LogInformation($"Kullanıcı giriş denemesi: {model.Username}");
 
-            var user = await UserManager.FindByNameAsync(model.Username);
+            var user = await _userService.GetUserByUsernameAsync(model.Username);
             if (user == null)
             {
-                Logger.LogWarning($"User not found: {model.Username}");
-                return Unauthorized(new { message = "Invalid username or password" });
+                _logger.LogWarning($"Kullanıcı bulunamadı: {model.Username}");
+                return Unauthorized(new { message = "Geçersiz kullanıcı adı veya şifre" });
             }
 
-            var result = await SignInManager.CheckPasswordSignInAsync(user, model.Password, false);
-            if (!result.Succeeded)
+            bool isValidPassword = await _userService.CheckPasswordAsync(user, model.Password);
+            if (!isValidPassword)
             {
-                Logger.LogWarning($"Invalid password for user: {model.Username}");
-                return Unauthorized(new { message = "Invalid username or password" });
+                _logger.LogWarning($"Geçersiz şifre, kullanıcı: {model.Username}");
+                return Unauthorized(new { message = "Geçersiz kullanıcı adı veya şifre" });
             }
 
-            var token = JwtService.GenerateToken(user);
-            Logger.LogInformation($"User {model.Username} logged in successfully");
+            var token = _jwtService.GenerateToken(user);
+            _logger.LogInformation($"Kullanıcı {model.Username} başarıyla giriş yaptı");
 
             return Ok(new
             {
@@ -55,17 +52,24 @@ namespace CRMTestCase.Controllers
                 {
                     id = user.Id,
                     username = user.Username,
-                    role = user.Role
+                    role = user.Role,
+                    createdAt = user.CreatedAt,
+                    updatedAt = user.UpdatedAt
                 }
             });
         }
 
         [HttpPost("logout")]
-        public async Task<IActionResult> Logout()
+        public IActionResult Logout()
         {
-            await SignInManager.SignOutAsync();
-            Logger.LogInformation("User logged out");
-            return Ok(new { message = "Logged out successfully" });
+            _logger.LogInformation("Kullanıcı çıkış yaptı");
+            return Ok(new { message = "Başarıyla çıkış yapıldı" });
         }
+    }
+
+    public class LoginModel
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }
