@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { authService } from '../services/api';
+import './header.css'; // Import the custom CSS file
 
 const Header = () => {
   const navigate = useNavigate();
@@ -12,16 +13,16 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-blue-600 text-white shadow">
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <Link to="/" className="text-2xl font-bold">Müşteri Listesi</Link>
+    <header className="header">
+      <div className="header-container">
+        <Link to="/" className="header-title">CRM Sistemi</Link>
         
         {user && (
-          <div className="flex items-center">
-            <span className="mr-4">Hoşgeldiniz, {user.username}</span>
+          <div className="header-user">
+            <span className="header-welcome">Hoşgeldiniz, {user.username}</span>
             <button
               onClick={handleLogout}
-              className="bg-blue-700 hover:bg-blue-800 py-1 px-3 rounded"
+              className="header-logout-button"
             >
               Çıkış Yap
             </button>

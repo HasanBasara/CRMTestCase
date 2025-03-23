@@ -1,0 +1,56 @@
+.header {
+  background-color: #2563eb; /* Blue background */
+  color: #ffffff; /* White text */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 1rem 0;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.header-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.header-title:hover {
+  text-decoration: underline;
+}
+
+.header-user {
+  display: flex;
+  align-items: center;
+}
+
+.header-welcome {
+  margin-right: 1rem;
+  font-size: 1rem;
+}
+
+.header-logout-button {
+  background-color: #1d4ed8; /* Darker blue */
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.header-logout-button:hover {
+  background-color: #1b3ea7; /* Even darker blue on hover */
+}
+
+.header-logout-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.5); /* Focus ring */
+}
