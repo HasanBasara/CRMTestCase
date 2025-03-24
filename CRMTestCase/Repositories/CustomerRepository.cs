@@ -30,7 +30,7 @@ namespace CRMTestCase.Repositories
             return await _context.Customers.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Customer>> SearchAsync(string name = null, string email = null, string region = null, DateTime? fromDate = null, DateTime? toDate = null)
+        public async Task<IEnumerable<Customer>> SearchAsync(string name = null, string email = null, string region = null, DateTime? date = null)
         {
             _logger.LogInformation("Searching customers with filters");
 
@@ -51,14 +51,9 @@ namespace CRMTestCase.Repositories
                 query = query.Where(c => c.Region == region);
             }
 
-            if (fromDate.HasValue)
+            if (date.HasValue)
             {
-                query = query.Where(c => c.RegistrationDate >= fromDate.Value);
-            }
-
-            if (toDate.HasValue)
-            {
-                query = query.Where(c => c.RegistrationDate <= toDate.Value);
+                query = query.Where(c => c.RegistrationDate >= date.Value);
             }
 
             return await query.ToListAsync();
@@ -66,6 +61,10 @@ namespace CRMTestCase.Repositories
 
         public async Task<Customer> AddAsync(Customer customer)
         {
+            if (customer.RegistrationDate != DateTime.MinValue && customer.RegistrationDate.Kind != DateTimeKind.Utc)
+            {
+                customer.RegistrationDate = DateTime.SpecifyKind(customer.RegistrationDate, DateTimeKind.Utc);
+            }
             _logger.LogInformation($"Adding new customer: {customer.FirstName} {customer.LastName}");
             _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
