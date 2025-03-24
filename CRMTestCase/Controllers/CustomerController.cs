@@ -23,8 +23,8 @@ namespace CRMTestCase.Controllers
         public async Task<IActionResult> GetAll()
         {
             Logger.LogInformation("GET/api/customer request received.");
-            var customer = CustomerRepository.GetAllAsync();
-            return Ok(customer);
+            var customers = await CustomerRepository.GetAllAsync();
+            return Ok(customers);
         }
 
         [HttpGet("{id}")]
@@ -45,11 +45,10 @@ namespace CRMTestCase.Controllers
             [FromQuery] string name = null,
             [FromQuery] string email = null,
             [FromQuery] string region = null,
-            [FromQuery] DateTime? fromDate = null,
-            [FromQuery] DateTime? toDate = null)
+            [FromQuery] DateTime? date = null)
         {
             Logger.LogInformation("Search request received with filters");
-            var customers = await CustomerRepository.SearchAsync(name, email, region, fromDate, toDate);
+            var customers = await CustomerRepository.SearchAsync(name, email, region, date);
             return Ok(customers);
         }
 
