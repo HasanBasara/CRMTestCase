@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/api';
-import './Login.css';
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Paper,
+  CircularProgress,
+} from '@mui/material';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -19,58 +26,77 @@ const Login = () => {
       await authService.login(username, password);
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed. Please try again.');
+      setError('Giriş işlemi başarısız oldu. Lütfen kullanıcı adı ve şifrenizi kontrol edin.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <h2 className="login-title">Giriş</h2>
-        
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        backgroundColor: '#f5f5f5',
+      }}
+    >
+      <Paper
+        elevation={3}
+        sx={{
+          width: 400,
+          p: 4,
+          borderRadius: 2,
+        }}
+      >
+        <Typography variant="h5" component="h2" gutterBottom textAlign="center">
+          Giriş
+        </Typography>
+
         {error && (
-          <div className="error-message">
+          <Typography
+            variant="body2"
+            color="error"
+            sx={{ mb: 2, textAlign: 'center' }}
+          >
             {error}
-          </div>
+          </Typography>
         )}
-        
+
         <form onSubmit={handleLogin}>
-          <div className="form-group">
-            <label htmlFor="username">Kullanıcı Adı</label>
-            <input
-              id="username"
-              type="text"
-              className="form-input"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="password">Şifre</label>
-            <input
-              id="password"
-              type="password"
-              className="form-input"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          
-          <button
+          <TextField
+            label="Kullanıcı Adı"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <TextField
+            label="Şifre"
+            type="password"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <Button
             type="submit"
-            className="submit-button"
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{ mt: 2 }}
             disabled={loading}
           >
-            {loading ? 'Loading...' : 'Login'}
-          </button>
+            {loading ? <CircularProgress size={24} color="inherit" /> : 'Giriş Yap'}
+          </Button>
         </form>
-      </div>
-    </div>
+      </Paper>
+    </Box>
   );
 };
 

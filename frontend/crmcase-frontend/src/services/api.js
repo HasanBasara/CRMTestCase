@@ -36,26 +36,26 @@ axios.interceptors.request.use(
 
   export const customerService = {
     getAll: async () => {
-      const response = await axios.get(`${API_URL}/customers`);
+      const response = await axios.get(`${API_URL}/customer`);
       return response.data;
     },
     getById: async (id) => {
-      const response = await axios.get(`${API_URL}/customers/${id}`);
+      const response = await axios.get(`${API_URL}/customer/${id}`);
       return response.data;
     },
     search: async (params) => {
-      const response = await axios.get(`${API_URL}/customers/search`, { params });
+      const response = await axios.get(`${API_URL}/customer/search`, { params });
       return response.data;
     },
     create: async (customer) => {
-      const response = await axios.post(`${API_URL}/customers`, customer);
+      const response = await axios.post(`${API_URL}/customer`, customer);
       return response.data;
     },
     update: async (id, customer) => {
-      const response = await axios.put(`${API_URL}/customers/${id}`, customer);
+      const response = await axios.put(`${API_URL}/customer/${id}`, customer);
       return response.data;
     },
     delete: async (id) => {
-      await axios.delete(`${API_URL}/customers/${id}`);
+      await axios.delete(`${API_URL}/customer/${id}`);
     }
   };

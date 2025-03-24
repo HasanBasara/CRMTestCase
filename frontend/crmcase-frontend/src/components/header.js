@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/api';
-import './header.css'; // Import the custom CSS file
 
 const Header = () => {
   const navigate = useNavigate();
@@ -13,23 +13,23 @@ const Header = () => {
   };
 
   return (
-    <header className="header">
-      <div className="header-container">
-        <Link to="/" className="header-title">CRM Sistemi</Link>
-        
+    <AppBar position="static">
+      <Toolbar>
+        <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          CRM Yönetim Sistemi
+        </Typography>
         {user && (
-          <div className="header-user">
-            <span className="header-welcome">Hoşgeldiniz, {user.username}</span>
-            <button
-              onClick={handleLogout}
-              className="header-logout-button"
-            >
+          <Box>
+            <Typography variant="body1" sx={{ display: 'inline', mr: 2 }}>
+              Hoşgeldiniz, {user.username}
+            </Typography>
+            <Button color="inherit" onClick={handleLogout}>
               Çıkış Yap
-            </button>
-          </div>
+            </Button>
+          </Box>
         )}
-      </div>
-    </header>
+      </Toolbar>
+    </AppBar>
   );
 };
 

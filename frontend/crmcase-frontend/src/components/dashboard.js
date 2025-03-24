@@ -1,11 +1,14 @@
 import React from 'react';
+import { Box, Typography } from '@mui/material';
 import CustomerList from './customerList';
 
 const Dashboard = () => {
   return (
-    <div>
+    <Box sx={{ p: 3 }}>
+      <Typography variant="h4" gutterBottom>
+      </Typography>
       <CustomerList />
-    </div>
+    </Box>
   );
 };
 
